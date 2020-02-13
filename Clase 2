@@ -1,0 +1,103 @@
+##################################################
+#Series de tiempo
+#Clase 2
+
+###
+#Descomposicon de una serie de tiempo
+#Petroleo
+setwd("../Downloads")
+library(foreign)
+library(readxl)
+
+graphics.off()
+
+petroleo <- read.csv("../Downloads/sarima1.csv")
+petroleo.ts <- ts(petroleo)
+plot(petroleo.ts, xlab="Tiempo", ylab="Precio del barril", main="Precio del barril de petroleo", col="red")
+
+#funcion: decompose()
+petroleo.ts <- ts(petroleo, frequency=6)
+petroleo.descom <- decompose(petroleo.ts, "additive") #descompone en componentes 
+
+#Graficar
+plot(petroleo.descom) #Grafica componentes
+
+plot(as.ts(petroleo.descom$seasonal))
+plot(as.ts(petroleo.descom$trend))
+plot(as.ts(petroleo.descom$random))
+
+x11()
+par(mfrow= c(3,1))
+plot(petroleo.descom$seasonal)
+plot(petroleo.descom$trend)
+plot(petroleo.descom$random)
+
+
+#Multiplicativo
+#funcion: decompose()
+rates <- read.csv("../Downloads/rates.csv")
+rates.ts <-ts(rates)
+plot(rates.ts, xlab="Tiempo", ylab="Paridad", main="Paridad peso/dolar", col="blue")
+
+rates.ts = ts(rates, frequency=12 , star= 2000)
+rates.descom = decompose(rates.ts, "multiplicative")
+
+plot(as.ts(rates.descom$seasonal))
+plot(as.ts(rates.descom$trend))
+plot(as.ts(rates.descom$random))
+plot(rates.descom)
+
+###################
+rural <-read.csv("../Downloads/ejemplo.csv")
+rural.ts <- ts(rural, start= 1960, end= 2014, frequency=1)
+print(rural)
+plot(rural.ts, xlab="Periodo", ylab="Porcentaje", main="Porcentaje de poblacion rural en Mexico", col="red")
+
+rural.ts = ts(rural, frequency = 2)
+rural.descom = decompose(rural.ts, "additive")
+
+#Graficar
+plot(as.ts(rural.descom$seasonal))
+plot(as.ts(rural.descom$trend))
+plot(as.ts(rural.descom$random))
+plot(rural.descom)
+
+
+###############
+library(fpp)
+par(mfrow=c(2,2))
+plot(hsales,xlab="Año", ylab="Ventas mensuales de viviendas (Millones)", col=3)
+plot(ustreas,xlab="Dias", ylab="Contratos del hacienda", col="red")
+plot(elec,xlab="Años", ylab="Producción de electricidad mensual", col=5)
+plot(diff(dj),xlab="Dias", ylab="Cambio diario en el indice", col="purple")
+
+graphics.off()
+
+###Covarianza (x y) 
+set.seed(11)
+y <- seq(1, 100) + 10.0*rnorm(1:100)
+plot(x,y, col="red")
+
+cov(x, y)
+
+cor(x,y)
+
+###Correlograma
+set.seed(12345)
+proceso1 <- rnorm(100)
+acf(proceso1, col=33) #Da las funciones de autocorrelacion del proceso 1
+
+proceso2 <- seq(1, 100)
+acf(proceso2, col=4, main="", ylab="Funcion de autocorrelacion", xlab="Retardo (k)")
+plot(proceso2)
+
+proceso3 <- rep(1:10, 10)
+acf(proceso3)
+plot(proceso3, col=500)
+#La forma sinoidal es estricactamente una fuerte estacionalidad
+
+petroleo <- read.csv("sarima1.csv")
+petroleo.ts <- ts(petroleo)
+plot(petroleo.ts, xlab="Tiempo", ylab="Precio del barril", main="Precio del barril de petroleo", col="red")
+
+acf(petroleo.ts)
