@@ -1,0 +1,48 @@
+####Procesos Medias Moviles
+#Un proceso media movil depende de los terminos aleatorios 
+#mas un coefieciente de orden q.
+
+###MA1
+ma1 <- ARMAacf(ma=c(0.5), lag.max=10) # 10 rezagos de ACF para MA (1) con theta1 = 0.5
+retardos1 <- 0:10 #crea una variable denominada "retrasos" que varía de 0 a 10.
+x11(); plot(retardos1, ma1, xlim=c(1,10), ylab="autocorrelacion",type="h", 
+     main = "FAC para MA(1) con theta1 = 0.5")
+abline(h=0, col="red") #adds a horizontal axis to the plot 
+
+###Si lo simulamos se ve así
+ma1s <- arima.sim(n=200, list(ma=c(0.5))) #Simulaciones n = 200 valores para MA(1)
+vary <- ma1s+1 # agrega 1 para hacer media= 1. La simulación por defecto es de media= 0.
+windows(); plot(vary, type="b", main="Datos simulados de MA(1)", col="blue")
+acf(vary, xlim=c(1,10), main="FAC para los datos simulados") 
+
+
+####MA2
+ma2 <- ARMAacf(ma=c(0.5, 0.2), lag.max=10)
+ma2
+retardos2 <- 0:10
+plot(retardos2, ma2, xlim=c(1,10), ylab="Autocorrelacion",type="h", 
+     main = "FAC para MA(2) con theta1 = 0.5, theta2=0.2", col="brown")
+abline(h=0, col="red")
+
+#Si lo simulamos se ve asi
+vary2 <- arima.sim(n=200, list(ma=c(0.5, 0.2)))
+vary2 <- vary2+1
+plot(vary2, type="b", main = "Datos simulados de MA(2)")
+acf(vary2, xlim=c(1,10), main="FAC para los datos simulados")
+
+
+####MA3
+ma3 <- ARMAacf(ma=c(0.5, 0.2, 0.1), lag.max=10)
+ma3
+retardos3 <- 0:10
+plot(retardos3, ma3, xlim=c(1,10), ylab="Autocorrelacion",type="h", 
+     main = "FAC para MA(3) con theta1 = 0.5, theta2= 0.2, tehta3= 0.1", col="brown")
+abline(h=0, col="red")
+
+#Si lo simulamos se ve asi
+vary3 <- arima.sim(n=200, list(ma=c(0.5, 0.2, 0.1)))
+vary3 <- vary3+1
+plot(vary3, type="b", main = "Datos simulados de MA(3)")
+acf(vary3, xlim=c(1,10), main="FAC para los datos simulados")
+
+
